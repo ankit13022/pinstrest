@@ -1,7 +1,7 @@
 import "./app.css";
 import Gallery from "./components/gallery/Gallery";
 import LeftBar from "./components/leftBar/LeftBar";
-import Topbar from "./components/topBar/Topbar";
+import Topbar from "./components/topBar/TopBar";
 
 const App = () => {
   return (
