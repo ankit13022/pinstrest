@@ -1,13 +1,21 @@
 import express from 'express';
-
+import connectDB from './utils/connectDB.js';
+import pinRouter from './routes/pin.route.js';
+import cors from 'cors';
+import dotenv from "dotenv";
+dotenv.config();
 const app = express();
+
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+}));
 
 app.use(express.json());
 
-app.use('/test', (req, res) => {
-    res.send('Welcome to the Pintrest-like application backend!');
-});
+app.use('/pins', pinRouter);
 
 app.listen(3000, () => {
+    connectDB()
     console.log('Server is running on port 3000');
 });
