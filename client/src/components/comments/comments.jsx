@@ -1,15 +1,31 @@
 import "./comments.css";
 import Comment from "./comment";
 import CommentForm from "./commentForm";
-const comments = () => {
+import { useQuery } from "@tanstack/react-query";
+import apiRequest from "../../utils/apiRequest";
+
+const comments = ({ id }) => {
+  const { isPending, error, data } = useQuery({
+    queryKey: ["comments", id],
+    queryFn: () => apiRequest.get(`/comments/${id}`).then((res) => res.data),
+  });
+
+  if (isPending) return "Loading...";
+
+  if (error) return "An error has occurred: " + error.message;
+
   return (
     <div className="comments">
       <div className="commentList">
-        <span className="commentCount">5 Comments</span>
+        <span className="commentCount">
+          {data.length === 0 ? "No comments" : data.length + " Comments"}
+        </span>
         {/* COMMENT */}
-        <Comment />
+        {data.map((comment) => (
+          <Comment key={comment._id} comment={comment} />
+        ))}
       </div>
-      <CommentForm />
+      <CommentForm id={id} />
     </div>
   );
 };
